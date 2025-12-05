@@ -15,11 +15,13 @@ public class Process {
         this.cpu_burst_times = new int[times.length / 2];
 
         for (int i = 0; i < times.length; i += 2) {
-            io_burst_times[i] = times[i];
+            io_burst_times[i / 2] = times[i];
+            System.out.println(times[i]);
         }
 
         for (int i = 1; i < times.length; i += 2) {
-            cpu_burst_times[i - 1] = times[i];
+            cpu_burst_times[(i - 1) / 2] = times[i];
+            System.out.println(times[i]);
         }
 
         this.priority = priority;
@@ -39,6 +41,20 @@ public class Process {
 
     boolean hasMoreCpuBursts() {
         return burst_number < cpu_burst_times.length;
+    }
+    
+    // for debugging purposes
+    void print() {
+    	System.out.println("Priority: " + priority);
+    	System.out.print("IO times: ");
+    	for (int i = 0; i < io_burst_times.length; i += 1) {
+    		System.out.print(io_burst_times[i] + " ");
+    	}
+    	System.out.print("CPU times: ");
+    	for (int i = 0; i < cpu_burst_times.length; i += 1) {
+    		System.out.print(cpu_burst_times[i] + " ");
+    	}
+    	System.out.print("\n");
     }
 
 }
