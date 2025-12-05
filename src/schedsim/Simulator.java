@@ -5,11 +5,14 @@ import java.util.LinkedList;
 
 //before submitting look at all access modifiers again
 public class Simulator {
+    protected final int UNCHANGED = -1;
+    protected final int NO_RUNNING_PROCESS = -1;
+
     protected LinkedList<Integer> ready_queue;
     protected LinkedList<Integer> wait_queue;
     protected LinkedList<Event> event_queue;
     protected Process[] process_table;
-    protected int running_process = -1;
+    protected int running_process = NO_RUNNING_PROCESS;
     protected int time = 0;
     protected int end_time;
     protected int total_idle_time = 0;
@@ -34,22 +37,23 @@ public class Simulator {
 
     // for all other event types added follow same structure
     private void handleEvent(Event event) {
-        time = event.time;
+        time = event.getTime();
+        String type = event.getType();
 
-        if (event.type == "process_arrives") {
+        if (type == "process_arrives") {
             handleProcessArrives(event);
         }
 
-        else if (event.type == "cpu_burst_finishes") {
+        else if (type == "cpu_burst_finishes") {
             handleCpuBurstFinishes(event);
         }
 
-        else if (event.type == "io_burst_finishes") {
+        else if (type == "io_burst_finishes") {
             handleIoBurstFinishes(event);
         }
-
-        invokeScheduler(); // may make sense to move this call to children depending on how many event
-                           // handlers would need to call it (all FIFO ones do) if do make method protected
+        // may make sense to move this call to handlers depending on how many event
+        // handlers would need to call it (all FIFO ones do)
+        invokeScheduler();
     }
 
     protected void handleProcessArrives(Event event) {
@@ -57,44 +61,66 @@ public class Simulator {
     }
 
     private void handleCpuBurstFinishes(Event event) {
+        int process_number = event.getProcess();
+
         startIdle();
-        if (process_table[event.process].hasMoreIoBursts()) {
-            wait_queue.addLast(event.process); // maybe make this function addToWaitQueue
-            scheduleIoBurstCompletion(event.process);
+
+        if (process_table[process_number].hasMoreIoBursts()) {
+            addToWaitQueue(process_number);
+        } else {
+            // If no more IO bursts, process is complete
+            process_table[process_number].setEnd_time(time);
         }
-        // If no more IO bursts, process is complete
-        process_table[event.process].end_time = time;
+
+    }
+
+    private void addToWaitQueue(int process_number) {
+        wait_queue.addLast(process_number);
+        scheduleIoBurstCompletion(process_number);
     }
 
     private void handleIoBurstFinishes(Event event) {
-        wait_queue.remove(event.process);
-        process_table[event.process].burst_number++; // might want to rename burst_number to burst_cycle
+        int process_number = event.getProcess();
 
-        if (process_table[event.process].hasMoreCpuBursts()) {
-            ready_queue.addLast(event.process); // maybe make this (and duplicate in FIFO) a function addToReadyQueue
-            process_table[event.process].startWaiting(time);
+        removeFromWaitQueue(process_number);
+
+        if (process_table[process_number].hasMoreCpuBursts()) {
+            addToReadyQueue(process_number);
+        } else {
+            // If no more bursts, process is complete
+            process_table[process_number].setEnd_time(time);
         }
-        // If no more bursts, process is complete
-        process_table[event.process].end_time = time;
+
+    }
+
+    private void removeFromWaitQueue(int process_number) {
+        wait_queue.remove(process_number);
+        // increment shared index for both arrays of burst lengths
+        process_table[process_number].incrementBurstNumber(); // might want to rename burst_number to burst_cycle
+    }
+
+    protected void addToReadyQueue(int process_number) {
+        ready_queue.addLast(process_number); // maybe make this (and duplicate in FIFO) a function
+        process_table[process_number].startWaiting(time);
     }
 
     private void invokeScheduler() {
         int picked_process = decideNextRunningProcess();
 
-        if (picked_process == -1) {
+        if (picked_process == UNCHANGED) {
             return;
         }
         runProcess(picked_process);
     }
 
-    // returns process ID, -1 if not changed
+    // returns process ID, UNCHANGED if not changed
     protected int decideNextRunningProcess() {
-        return -1;
+        return UNCHANGED;
     }
 
     private void runProcess(int process) {
         running_process = process;
-        process_table[running_process].stopWaiting(time);
+        removeFromReadyQueue(running_process);
 
         if (is_idle) {
             stopIdle();
@@ -103,8 +129,13 @@ public class Simulator {
         scheduleCpuBurstCompletion(running_process);
     }
 
+    private void removeFromReadyQueue(int process_number) {
+        ready_queue.remove(process_number);
+        process_table[process_number].stopWaiting(time);
+    }
+
     private void scheduleCpuBurstCompletion(int running_process) {
-        int cpu_burst_length = process_table[running_process].getBurst();
+        int cpu_burst_length = process_table[running_process].getNextCpuBurstLength();
         int cpu_burst_end_time = cpu_burst_length + time;
         Event cpu_burst_end_event = new Event("burst_finished", running_process, cpu_burst_end_time);
 
@@ -112,7 +143,7 @@ public class Simulator {
     }
 
     private void scheduleIoBurstCompletion(int process) {
-        int io_burst_length = process_table[process].getWait();
+        int io_burst_length = process_table[process].getNextIoBurstLength();
         int io_burst_end_time = io_burst_length + time;
         Event io_burst_end_event = new Event("io_burst_finishes", process, io_burst_end_time);
 
@@ -120,7 +151,7 @@ public class Simulator {
     }
 
     private void startIdle() {
-        running_process = -1;
+        running_process = NO_RUNNING_PROCESS;
         is_idle = true;
         idle_instance_start = time;
     }
@@ -130,13 +161,14 @@ public class Simulator {
         total_idle_time += time - idle_instance_start;
     }
 
-    protected void addEvent(Event event) {
+    private void addEvent(Event event) {
         event_queue.add(event);
-        event_queue.sort(Comparator.comparingInt(e -> e.time));
-        // or comparingInt(Event::getInt) if make getter for time
+        event_queue.sort(Comparator.comparingInt(Event::getTime));
+        // or comparingInt(e -> e.getTime()) if this does not work
     }
 
-    protected void removeEvent(Event event) {
+    @SuppressWarnings("unused")
+    private void removeEvent(Event event) {
         event_queue.remove(event);
     }
 

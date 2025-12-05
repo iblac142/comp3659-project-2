@@ -10,17 +10,16 @@ public class FIFO extends Simulator {
 
     @Override
     protected void handleProcessArrives(Event event) {
-        ready_queue.addLast(event.process);
-        process_table[event.process].startWaiting(time);
+        addToReadyQueue(event.getProcess());
     }
 
     @Override
     protected int decideNextRunningProcess() {
-        if (running_process == -1 & !ready_queue.isEmpty()) {
+        if (running_process == NO_RUNNING_PROCESS & !ready_queue.isEmpty()) {
             return ready_queue.removeFirst();
         }
 
-        return -1;
+        return UNCHANGED;
     }
 
 }
