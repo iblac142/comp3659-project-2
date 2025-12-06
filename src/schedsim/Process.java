@@ -6,12 +6,13 @@ public class Process {
     private int[] io_burst_lengths;
     private int[] cpu_burst_lengths;
     private int burst_number = 0;
+    private int burst_start_time;
 
     // do we even need these two?
     private int time_spent = 0;
     private int total_time = 0;
 
-    private int priority;
+    private int priority; // in SJF and SRJF this is also the estimated cpu burst length
     private int end_time;
     private int total_waiting_time = 0;
     private int waiting_instance_start = 0;
@@ -42,8 +43,20 @@ public class Process {
         return cpu_burst_lengths[burst_number];
     }
 
+    public int getCurrentCpuBurstLength() {
+        return cpu_burst_lengths[burst_number - 1];
+    }
+
     public void incrementBurstNumber() {
         burst_number++;
+    }
+
+    public void setBurst_start_time(int burst_start_time) {
+        this.burst_start_time = burst_start_time;
+    }
+
+    public int getBurst_start_time() {
+        return burst_start_time;
     }
 
     public int getTime_spent() {
@@ -110,6 +123,14 @@ public class Process {
 
     public void stopWaiting(int end_time) {
         total_waiting_time += end_time - waiting_instance_start;
+    }
+
+    public void setPerdicted_cpu_burst_lenght(int perdicted_cpu_burst_length) {
+        this.priority = perdicted_cpu_burst_length;
+    }
+
+    public void calculateNewPerdictedCpuBurstLength(int weighting_coefficient) {
+        priority = weighting_coefficient * priority + (1 - weighting_coefficient) * priority;
     }
 
 }

@@ -126,6 +126,7 @@ public class Simulator {
             stopIdle();
         }
 
+        process_table[running_process].setBurst_start_time(time);
         scheduleCpuBurstCompletion(running_process);
     }
 
