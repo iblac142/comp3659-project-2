@@ -57,7 +57,7 @@ public class Simulator {
     }
 
     protected void handleProcessArrives(Event event) {
-        System.out.println("Undefined event for this scheduling algorithm");
+        addToReadyQueue(event.getProcess());
     }
 
     private void handleCpuBurstFinishes(Event event) {
@@ -100,7 +100,7 @@ public class Simulator {
     }
 
     protected void addToReadyQueue(int process_number) {
-        ready_queue.addLast(process_number); // maybe make this (and duplicate in FIFO) a function
+        ready_queue.addLast(process_number);
         process_table[process_number].startWaiting(time);
     }
 
