@@ -34,4 +34,10 @@ public class SRJF extends SJF {
         }
 
     }
+
+    @Override
+    protected void runProcess(int process) {
+        event_queue.removeIf(event -> "cpu_burst_finishes".equals(event.getType()));
+        super.runProcess(process);
+    }
 }

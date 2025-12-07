@@ -31,8 +31,14 @@ public class Simulator {
         }
 
         end_time = time;
+    }
 
-        outputResults();
+    public int getEnd_Time() {
+        return end_time;
+    }
+
+    public int getTotal_idle_time() {
+        return total_idle_time;
     }
 
     // for all other event types added follow same structure
@@ -118,7 +124,7 @@ public class Simulator {
         return UNCHANGED;
     }
 
-    private void runProcess(int process) {
+    protected void runProcess(int process) {
         running_process = process;
         removeFromReadyQueue(running_process);
 
@@ -138,7 +144,7 @@ public class Simulator {
     private void scheduleCpuBurstCompletion(int running_process) {
         int cpu_burst_length = process_table[running_process].getNextCpuBurstLength();
         int cpu_burst_end_time = cpu_burst_length + time;
-        Event cpu_burst_end_event = new Event("burst_finished", running_process, cpu_burst_end_time);
+        Event cpu_burst_end_event = new Event("cpu_burst_finishes", running_process, cpu_burst_end_time);
 
         addEvent(cpu_burst_end_event);
     }
@@ -165,15 +171,6 @@ public class Simulator {
     private void addEvent(Event event) {
         event_queue.add(event);
         event_queue.sort(Comparator.comparingInt(Event::getTime));
-        // or comparingInt(e -> e.getTime()) if this does not work
     }
 
-    @SuppressWarnings("unused")
-    private void removeEvent(Event event) {
-        event_queue.remove(event);
-    }
-
-    private void outputResults() {
-        // TODO
-    }
 }
