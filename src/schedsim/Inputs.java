@@ -6,15 +6,35 @@ import java.util.Scanner;
 import java.lang.NumberFormatException;
 
 public class Inputs {
+	static int MAX_NUM = Integer.MAX_VALUE;
 	
-	// this is bad i need to improve this
-	Inputs() {
+	public static int intInput(Scanner in, String prompt, int min, int max) {
+		System.out.println(prompt);
 		
+		if (min < 0) {
+			min = 0;
+		} else if (max < 0) {
+			max = MAX_NUM;
+		}
+		
+		int num = -1;
+		while (num < 0) {
+			try {
+				num = Integer.parseInt(in.nextLine());
+				if (num > max || num < min) {
+					System.out.println("That number is out of bounds. Try again!");
+					num = -1;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("That's not a valid number. Try again!");
+				num = -1;
+			}
+		}
+		
+		return num;
 	}
 	
-	int getProcesses(Process[] process_table) {
-		Scanner in = new Scanner(System.in);
-		
+	public int getProcesses(Scanner in, Process[] process_table) {
 		System.out.println("Please specify the .csv file containing the processes.");
 		
 		String filename = in.nextLine();
@@ -48,11 +68,13 @@ public class Inputs {
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found. Aborting!");
+			error = 1;
 		} catch (NumberFormatException e) {
 			System.out.println("Process " + process_num + " has an invalid value! Aborting!");
+			error = 1;
 		}
 		
 		in.close();
-		return 0;
+		return error;
 	}
 }
