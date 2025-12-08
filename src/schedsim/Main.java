@@ -1,5 +1,6 @@
 package schedsim;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class Main {
         	for (int j = 0; process_table[j] != null; j += 1) {
             	Event e = new Event("process_arrives", j, process_table[j].getIoBurstLength());
             	event_queue.add(e);
+            	event_queue.sort(Comparator.comparingInt(Event::getTime));
             }
         	
 	        if (selected_algorithm == 0) {

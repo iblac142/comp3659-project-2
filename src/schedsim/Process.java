@@ -23,7 +23,7 @@ public class Process {
         this.io_burst_lengths = new int[times.length / 2];
         this.cpu_burst_lengths = new int[times.length / 2];
 
-        for (int i = 0; i < times.length; i += 2) {
+        for (int i = 2; i < times.length; i += 2) {
             io_burst_lengths[i / 2] = times[i];
         }
 
