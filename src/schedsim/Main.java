@@ -25,7 +25,7 @@ public class Main {
             	Event e = new Event("process_arrives", j, process_table[j].getIoBurstLength());
             	event_queue.add(e);
             }
-        	System.out.println(event_queue);
+        	
 	        if (selected_algorithm == 0) {
 	            FIFO fifo = new FIFO(process_table, event_queue);
 	
