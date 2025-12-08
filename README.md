@@ -37,3 +37,4 @@ For SJF and PE SJF, the user is prompted to input a starting guess value.
 Known Issues:
 * Round Robin is not implemented.
 * The number of scheduling decisions made statistic is not correct in many cases when using Pre-Emptive Shortest Job First. (It is typically greater than other algorithms, but not necessarily the exact correct value)
+* Unintended behaviour if the total amount of time taken by the simulator exceeds the integer limit
