@@ -11,8 +11,12 @@ public class SRJF extends SJF {
     @Override
     protected int decideNextRunningProcess() {
         if (!ready_queue.isEmpty()) {
+            if (running_process == NO_RUNNING_PROCESS) {
+                return ready_queue.peekFirst();
+            }
+
             if (isNextJobShorter()) {
-                return ready_queue.removeFirst();
+                return ready_queue.peekFirst();
             }
         }
 
@@ -20,12 +24,17 @@ public class SRJF extends SJF {
     }
 
     private boolean isNextJobShorter() {
+        if (running_process == NO_RUNNING_PROCESS) {
+            return false;
+        }
+
         Process current_process = process_table[running_process];
         Process next_process = process_table[ready_queue.peekFirst()];
 
         int current_burst_completed = time - current_process.getBurst_start_time();
-        int current_process_burst_remaining = current_process.getCurrentCpuBurstLength() - current_burst_completed;
-        int next_process_burst_length = next_process.getNextCpuBurstLength();
+        int current_process_burst_total = current_process.getCpuBurstLength();
+        int current_process_burst_remaining = current_process_burst_total - current_burst_completed;
+        int next_process_burst_length = next_process.getCpuBurstLength();
 
         if (next_process_burst_length < current_process_burst_remaining) {
             return true;
@@ -37,7 +46,27 @@ public class SRJF extends SJF {
 
     @Override
     protected void runProcess(int process) {
-        event_queue.removeIf(event -> "cpu_burst_finishes".equals(event.getType()));
+        if (running_process != NO_RUNNING_PROCESS && running_process != process) {
+            stopRunningPreemptedProcess();
+            updateCpuBurstLength(process_table[running_process]);
+        }
+
         super.runProcess(process);
+
     }
+
+    private void stopRunningPreemptedProcess() {
+        event_queue.removeIf(
+                event -> "cpu_burst_finishes".equals(event.getType()) && event.getProcess() == running_process);
+        addToReadyQueue(running_process);
+    }
+
+    private void updateCpuBurstLength(Process process) {
+        int cpu_burst_total = process.getCpuBurstLength();
+        int cpu_burst_completed = time - process.getBurst_start_time();
+        int cpu_burst_remaining = cpu_burst_total - cpu_burst_completed;
+
+        process.setCpuBurstLength(cpu_burst_remaining);
+    }
+
 }

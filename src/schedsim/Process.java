@@ -35,16 +35,16 @@ public class Process {
     }
 
     // some of these get and sets might not be used remove before submitting
-    public int getNextIoBurstLength() {
+    public int getIoBurstLength() {
         return io_burst_lengths[burst_number];
     }
 
-    public int getNextCpuBurstLength() {
+    public int getCpuBurstLength() {
         return cpu_burst_lengths[burst_number];
     }
 
-    public int getCurrentCpuBurstLength() {
-        return cpu_burst_lengths[burst_number - 1];
+    public void setCpuBurstLength(int cpu_burst_lenth) {
+        this.cpu_burst_lengths[burst_number] = cpu_burst_lenth;
     }
 
     public void incrementBurstNumber() {
