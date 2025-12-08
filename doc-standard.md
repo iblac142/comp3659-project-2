@@ -1,0 +1,17 @@
+Each function* should have a block comment with three components:
+  1. Concisely describe the purpose of the function
+  2. List and describe each of the parameters
+  3. Describe the possible return values
+
+Inline comments are to be used when:
+* The precise function or purpose of a piece of code is not immediately apparent
+* It is helpful in letting a human reader understand the current state of the program
+* The coder believes it to be otherwise helpful
+
+Predefined constants are to be in UPPER_SNAKE_CASE.
+
+Function names and struct members are to be in snake_case.
+
+Variable names are to be in camelCase.
+
+*Excluding getter and setter functions, which ought to be self-explanatory.
