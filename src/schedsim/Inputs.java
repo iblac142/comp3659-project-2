@@ -74,7 +74,9 @@ public class Inputs {
 			System.out.println("Process " + process_num + " has an invalid value! Aborting!");
 			error = -1;
 		}
-		error = 0;
+		if (error == 1) {
+			error = 0;
+		}
 		return error;
 	}
 }
