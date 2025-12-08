@@ -5,9 +5,28 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.lang.NumberFormatException;
 
+/**
+ * Class which handles input for the simulator
+ */
 public class Inputs {
 	static int MAX_NUM = Integer.MAX_VALUE;
 	
+	/**
+     * Generic Positive Input 
+     * continually reprompts until an acceptable input is given
+     *
+     * @param in		the scanner to use as input 
+     *                      
+     * @param prompt	the prompt to display to output
+     * 
+     * @param min		the minimum acceptable value
+     * 					if -1, defaults to 0
+     * 
+     * @param max		the maximum acceptable values
+     * 					if -1, defaults to the maximum integer value
+     * 
+     * @return the integer that the user inputs
+     */
 	public int intInput(Scanner in, String prompt, int min, int max) {
 		System.out.println(prompt);
 		
@@ -34,6 +53,16 @@ public class Inputs {
 		return num;
 	}
 	
+	/**
+     * Prompts user to specify a filename which contains the processes
+     *
+     * @param in				the scanner to use as input 
+     *                      
+     * @param process_table		the table to populate with processes
+     * 
+     * @return 0 if successful, -1 if not
+     * 
+     */
 	public int getProcesses(Scanner in, Process[] process_table) {
 		System.out.println("Please specify the .csv file containing the processes.");
 		
@@ -71,7 +100,11 @@ public class Inputs {
 			System.out.println("File not found. Aborting!");
 			error = -1;
 		} catch (NumberFormatException e) {
-			System.out.println("Process " + process_num + " has an invalid value! Aborting!");
+			System.out.println("Process " + process_num + " has an invalid value. Aborting!");
+			error = -1;
+		}
+		if (error != -1 && process_table[0] == null) {
+			System.out.println("File is empty. Aborting!");
 			error = -1;
 		}
 		if (error == 1) {

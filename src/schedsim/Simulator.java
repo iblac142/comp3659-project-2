@@ -46,11 +46,6 @@ public class Simulator {
             i += 1;
         }
         this.process_count = i;
-        
-        for (int j = 0; j < process_count; j += 1) {
-        	Event e = new Event("process_arrives", j, process_table[j].getIoBurstLength());
-        	event_queue.add(e);
-        }
     }
 
     /**
