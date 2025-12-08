@@ -73,15 +73,20 @@ public class Inputs {
 		
 		try (Scanner scanner = new Scanner(file)) {
 			while (scanner.hasNextLine() && process_num < 128 && error == 0) {
+				// get next line from file and split it by the comma separator
 				String[] values = scanner.nextLine().split(",");
+				// must have odd number of values (priority + burst pairs)
+				// can't have 0 values or more than 64 processes
 				if (values.length % 2 == 1 && values.length >= 3 && values.length <= 129) {
 					int priority = Integer.parseInt(values[0]);
 					int[] times = new int[values.length - 1];
 					
+					// populate times table
 					for (int j = 1; j < values.length; j += 1) {
 						times[j - 1] = Integer.parseInt(values[j]);
 					}
 					
+					// create process and add it to the table
 					Process p = new Process(times, priority);
 					process_table[process_num] = p;
 					

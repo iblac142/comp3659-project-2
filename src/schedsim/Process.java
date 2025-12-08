@@ -18,15 +18,19 @@ public class Process {
         this.io_burst_lengths = new int[times.length / 2];
         this.cpu_burst_lengths = new int[times.length / 2];
         this.arrival_time = times[0];
-
+        
+        // populate io_burst_lengths table
         for (int i = 2; i < times.length; i += 2) {
             io_burst_lengths[i / 2] = times[i];
         }
 
+        // populate cpu_burst_lengths table
         for (int i = 1; i < times.length; i += 2) {
             cpu_burst_lengths[(i - 1) / 2] = times[i];
         }
 
+        // set listed priority
+        // this is overwritten later by sfj and pesfj
         this.priority = priority;
     }
 
