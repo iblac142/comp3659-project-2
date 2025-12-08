@@ -46,6 +46,11 @@ public class Simulator {
             i += 1;
         }
         this.process_count = i;
+        
+        for (int j = 0; j < process_count; j += 1) {
+        	Event e = new Event("process_arrives", j, process_table[j].getIoBurstLength());
+        	event_queue.add(e);
+        }
     }
 
     /**
@@ -286,9 +291,9 @@ public class Simulator {
         int total_wait_time = 0;
 
         System.out.printf("CPU Utilization: (100%% - Idle Time/Total Time)\n%f%% (%d/%d)\n",
-                ((1 - (float) total_idle_time / time) * 100), time, total_idle_time);
+                ((1 - (float) total_idle_time / time) * 100), total_idle_time, time);
 
-        System.out.printf("# of Scheduling Decisions:\n%d\n", 0); // 0 is a placeholder right now
+        System.out.printf("# of Scheduling Decisions:\n%d\n", number_of_scheduling_decisions); // 0 is a placeholder right now
 
         System.out.println("Process #: Wait Time");
         for (int i = 0; i < process_count; i += 1) {

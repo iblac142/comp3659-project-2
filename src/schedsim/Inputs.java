@@ -59,12 +59,12 @@ public class Inputs {
 					process_num += 1;
 				} else {
 					System.out.println("Process " + process_num + " has an incorrect number of values. Aborting!");
-					error = 1;
+					error = -1;
 				}
 			}
 			if (scanner.hasNextLine()) {
 				System.out.println("File contains greater than 128 processes. This is fine, but excess processes will be omitted.");
-				error = -1;
+				error = 1;
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {

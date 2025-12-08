@@ -25,12 +25,10 @@ public class Process {
 
         for (int i = 0; i < times.length; i += 2) {
             io_burst_lengths[i / 2] = times[i];
-            System.out.println(times[i]);
         }
 
         for (int i = 1; i < times.length; i += 2) {
             cpu_burst_lengths[(i - 1) / 2] = times[i];
-            System.out.println(times[i]);
         }
 
         this.priority = priority;

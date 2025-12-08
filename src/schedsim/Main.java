@@ -14,7 +14,7 @@ public class Main {
 
         Process[] process_table = new Process[128];
         LinkedList<Integer> process_queue;
-        LinkedList<Event> event_queue = null;
+        LinkedList<Event> event_queue = new LinkedList<Event>();
 
         Inputs inputs = new Inputs();
         Scanner in = new Scanner(System.in);
