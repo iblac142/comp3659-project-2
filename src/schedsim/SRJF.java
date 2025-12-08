@@ -56,6 +56,7 @@ public class SRJF extends SJF {
     }
 
     private void stopRunningPreemptedProcess() {
+        process_table[running_process].setBeen_preempted(true);
         event_queue.removeIf(
                 event -> "cpu_burst_finishes".equals(event.getType()) && event.getProcess() == running_process);
         addToReadyQueue(running_process);
@@ -67,6 +68,13 @@ public class SRJF extends SJF {
         int cpu_burst_remaining = cpu_burst_total - cpu_burst_completed;
 
         process.setCpuBurstLength(cpu_burst_remaining);
+    }
+
+    @Override
+    protected void addToReadyQueue(int process_number) {
+        super.addToReadyQueue(process_number);
+        process_table[process_number].setBeen_preempted(false);
+
     }
 
 }
