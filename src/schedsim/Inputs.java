@@ -74,7 +74,7 @@ public class Inputs {
 		try (Scanner scanner = new Scanner(file)) {
 			while (scanner.hasNextLine() && process_num < 128 && error == 0) {
 				String[] values = scanner.nextLine().split(",");
-				if (values.length % 2 == 1 && values.length >= 3 && values.length >= 129) {
+				if (values.length % 2 == 1 && values.length >= 3 && values.length <= 129) {
 					int priority = Integer.parseInt(values[0]);
 					int[] times = new int[values.length - 1];
 					

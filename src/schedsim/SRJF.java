@@ -61,7 +61,7 @@ public class SRJF extends SJF {
             updateCpuBurstLength(process_table[running_process]);
         }
 
-        // account for extra IO burst after last CPU burst ends
+        // rough fix for number of scheduling decisions being too high
         number_of_scheduling_decisions -= 1;
 
         super.runProcess(process);
