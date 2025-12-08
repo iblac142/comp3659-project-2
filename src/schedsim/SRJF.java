@@ -61,6 +61,8 @@ public class SRJF extends SJF {
             updateCpuBurstLength(process_table[running_process]);
         }
 
+        number_of_scheduling_decisions -= process_table.length + 1;
+
         super.runProcess(process);
 
     }
