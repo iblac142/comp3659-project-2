@@ -28,7 +28,7 @@ public class Simulator {
         this.event_queue = event_queue;
         
         int i = 0;
-        while (process_table[i] != null) {
+        while (i < process_table.length && process_table[i] != null) {
     		i += 1;
     	}
         this.process_count = i;
