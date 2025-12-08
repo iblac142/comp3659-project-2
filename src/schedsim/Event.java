@@ -5,16 +5,7 @@ public class Event {
     private int process;
     private int time;
 
-    Event(String type) {
-        this.type = type;
-    }
-
-    Event(String type, int process) {
-        this.type = type;
-        this.setProcess(process);
-    }
-
-    public Event(String type, int process, int time) {
+    Event(String type, int process, int time) {
         this.type = type;
         this.setProcess(process);
         this.setTime(time);
