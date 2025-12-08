@@ -21,6 +21,9 @@ public class Simulator {
     protected boolean is_idle = true;
 
     Simulator(Process[] process_table, LinkedList<Event> event_queue) {
+        this.ready_queue = new LinkedList<Integer>();
+        this.wait_queue = new LinkedList<Integer>();
+
         this.process_table = process_table;
         this.event_queue = event_queue;
         
@@ -107,7 +110,8 @@ public class Simulator {
     }
 
     private void removeFromWaitQueue(int process_number) {
-        wait_queue.remove(process_number);
+        wait_queue.remove(Integer.valueOf(process_number)); // Use Integer.valueOf to force remove(Object) instead of
+                                                            // remove(int)
         // increment shared index for both arrays of burst lengths
         process_table[process_number].incrementBurstNumber(); // might want to rename burst_number to burst_cycle
     }
@@ -144,12 +148,13 @@ public class Simulator {
     }
 
     private void removeFromReadyQueue(int process_number) {
-        ready_queue.remove(process_number);
+        ready_queue.remove(Integer.valueOf(process_number)); // Use Integer.valueOf to force remove(Object) instead of
+                                                             // remove(int)
         process_table[process_number].stopWaiting(time);
     }
 
     private void scheduleCpuBurstCompletion(int running_process) {
-        int cpu_burst_length = process_table[running_process].getNextCpuBurstLength();
+        int cpu_burst_length = process_table[running_process].getCpuBurstLength();
         int cpu_burst_end_time = cpu_burst_length + time;
         Event cpu_burst_end_event = new Event("cpu_burst_finishes", running_process, cpu_burst_end_time);
 
@@ -157,7 +162,7 @@ public class Simulator {
     }
 
     private void scheduleIoBurstCompletion(int process) {
-        int io_burst_length = process_table[process].getNextIoBurstLength();
+        int io_burst_length = process_table[process].getIoBurstLength();
         int io_burst_end_time = io_burst_length + time;
         Event io_burst_end_event = new Event("io_burst_finishes", process, io_burst_end_time);
 

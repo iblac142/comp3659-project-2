@@ -23,7 +23,7 @@ public class SimplePriority extends Simulator {
     @Override
     protected int decideNextRunningProcess() {
         if (running_process == NO_RUNNING_PROCESS & !ready_queue.isEmpty()) {
-            return ready_queue.removeFirst();
+            return ready_queue.peekFirst(); 
         }
 
         return UNCHANGED;
