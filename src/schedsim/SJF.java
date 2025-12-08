@@ -2,6 +2,9 @@ package schedsim;
 
 import java.util.LinkedList;
 
+/**
+ * Simulates a shortest job first CPU scheduling algorithm
+ */
 public class SJF extends SimplePriority {
     protected int weighting_coefficient;
     protected int starting_guess;
@@ -18,6 +21,11 @@ public class SJF extends SimplePriority {
         addToReadyQueueInitial(event.getProcess());
     }
 
+    /**
+     * add given process to ready queue for use only when it first arrives
+     *
+     * @param process_number process to add to ready queue
+     */
     private void addToReadyQueueInitial(int process_number) {
         super.addToReadyQueue(process_number);
     }

@@ -2,6 +2,10 @@ package schedsim;
 
 import java.util.LinkedList;
 
+/**
+ * Simulates a shortest remaining job first (also know as preemptive shortest
+ * job first) CPU scheduling algorithm
+ */
 public class SRJF extends SJF {
 
     SRJF(Process[] process_table, LinkedList<Event> event_queue, int weighting_coefficient, int starting_guess) {
@@ -23,6 +27,12 @@ public class SRJF extends SJF {
         return UNCHANGED;
     }
 
+    /**
+     * Determines if the next job has a shorter CPU burst then the current process
+     * had remaining. Also handles case when no process currently running
+     *
+     * @return true if the next job is shorter, false otherwise
+     */
     private boolean isNextJobShorter() {
         if (running_process == NO_RUNNING_PROCESS) {
             return false;
@@ -55,6 +65,9 @@ public class SRJF extends SJF {
 
     }
 
+    /**
+     * Stops running the current process if it has been preempted
+     */
     private void stopRunningPreemptedProcess() {
         process_table[running_process].setBeen_preempted(true);
         event_queue.removeIf(
@@ -62,6 +75,11 @@ public class SRJF extends SJF {
         addToReadyQueue(running_process);
     }
 
+    /**
+     * Updates the CPU burst length for a preempted process
+     *
+     * @param process the process to update the burst length for
+     */
     private void updateCpuBurstLength(Process process) {
         int cpu_burst_total = process.getCpuBurstLength();
         int cpu_burst_completed = time - process.getBurst_start_time();

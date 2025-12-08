@@ -2,6 +2,9 @@ package schedsim;
 
 import java.util.LinkedList;
 
+/**
+ * Simulates a First In First Out CPU scheduling algorithm
+ */
 public class FIFO extends Simulator {
 
     FIFO(Process[] process_table, LinkedList<Event> event_queue) {
