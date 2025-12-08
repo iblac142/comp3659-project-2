@@ -20,6 +20,9 @@ public class Simulator {
     protected boolean is_idle = true;
 
     Simulator(Process[] process_table, LinkedList<Event> event_queue) {
+        this.ready_queue = new LinkedList<Integer>();
+        this.wait_queue = new LinkedList<Integer>();
+
         this.process_table = process_table;
         this.event_queue = event_queue;
     }
