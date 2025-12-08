@@ -17,9 +17,9 @@ public class Main {
                         + "4 - Round Robin (not implemented)",
                 0, 3);
 
-        if (inputs.getProcesses(in, process_table) >= 0) {
+        if (inputs.getProcesses(in, process_table) == 0) {
 
-            for (int j = 0; process_table[j] != null; j += 1) {
+            for (int j = 0; j < 128 && process_table[j] != null; j += 1) {
                 Event e = new Event("process_arrives", j, process_table[j].getArrival_time());
                 event_queue.add(e);
                 event_queue.sort(Comparator.comparingInt(Event::getTime));
