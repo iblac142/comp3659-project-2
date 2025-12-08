@@ -1,19 +1,13 @@
 package schedsim;
 
 public class Process {
-    // We don't want anyone modifying wait or burst times after the process is
-    // created
     private int[] io_burst_lengths;
     private int[] cpu_burst_lengths;
     private int burst_number = 0;
     private int burst_start_time;
 
-    // do we even need these two?
-    private int time_spent = 0;
-    private int total_time = 0;
-    
     private int arrival_time;
-    private int priority; // in SJF and SRJF this is also the estimated cpu burst length
+    private int priority; // in SJF and SRJF this is also the estimated CPU burst length
     private int end_time;
     private int total_waiting_time = 0;
     private int waiting_instance_start = 0;
@@ -36,10 +30,10 @@ public class Process {
         this.priority = priority;
     }
 
-    // some of these get and sets might not be used remove before submitting
     public int getArrival_time() {
-    	return arrival_time;
+        return arrival_time;
     }
+
     public int getIoBurstLength() {
         return io_burst_lengths[burst_number];
     }
@@ -64,22 +58,6 @@ public class Process {
         return burst_start_time;
     }
 
-    public int getTime_spent() {
-        return time_spent;
-    }
-
-    public void setTime_spent(int time_spent) {
-        this.time_spent = time_spent;
-    }
-
-    public int getTotal_time() {
-        return total_time;
-    }
-
-    public void setTotal_time(int total_time) {
-        this.total_time = total_time;
-    }
-
     public int getPriority() {
         return priority;
     }
@@ -100,26 +78,22 @@ public class Process {
         return total_waiting_time;
     }
 
+    /**
+     * check if there are any more IO bursts for this process
+     *
+     * @return true if there are, false if not
+     */
     public boolean hasMoreIoBursts() {
         return burst_number < cpu_burst_lengths.length;
     }
 
+    /**
+     * check if there are any more CPU bursts for this process
+     *
+     * @return true if there are, false if not
+     */
     public boolean hasMoreCpuBursts() {
         return burst_number < cpu_burst_lengths.length;
-    }
-
-    // for debugging purposes
-    void print() {
-        System.out.println("Priority: " + priority);
-        System.out.print("IO times: ");
-        for (int i = 0; i < cpu_burst_lengths.length; i += 1) {
-            System.out.print(cpu_burst_lengths[i] + " ");
-        }
-        System.out.print("CPU times: ");
-        for (int i = 0; i < cpu_burst_lengths.length; i += 1) {
-            System.out.print(cpu_burst_lengths[i] + " ");
-        }
-        System.out.print("\n");
     }
 
     public void startWaiting(int start_time) {
@@ -138,6 +112,12 @@ public class Process {
         this.been_preempted = been_preempted;
     }
 
+    /**
+     * calculates the new predicted CPU burst length using exponential averaging
+     *
+     * @param weighting_coefficient the weighting coefficient for the exponential
+     *                              averaging equation
+     */
     public void calculateNewPerdictedCpuBurstLength(float weighting_coefficient) {
         float float_priority;
 

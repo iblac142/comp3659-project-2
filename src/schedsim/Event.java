@@ -20,7 +20,6 @@ public class Event {
         this.setTime(time);
     }
 
-    // some of these get and sets might not be used remove before submitting
     public String getType() {
         return type;
     }
