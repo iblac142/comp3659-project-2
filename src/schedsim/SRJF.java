@@ -8,7 +8,7 @@ import java.util.LinkedList;
  */
 public class SRJF extends SJF {
 
-    SRJF(Process[] process_table, LinkedList<Event> event_queue, int weighting_coefficient, int starting_guess) {
+    SRJF(Process[] process_table, LinkedList<Event> event_queue, float weighting_coefficient, int starting_guess) {
         super(process_table, event_queue, weighting_coefficient, starting_guess);
     }
 

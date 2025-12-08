@@ -291,7 +291,7 @@ public class Simulator {
         int total_wait_time = 0;
 
         System.out.printf("CPU Utilization: (100%% - Idle Time/Total Time)\n%f%% (%d/%d)\n",
-                ((1 - (float) total_idle_time / time) * 100), total_idle_time, time);
+                ((1 - (float) total_idle_time / end_time) * 100), total_idle_time, end_time);
 
         System.out.printf("# of Scheduling Decisions:\n%d\n", number_of_scheduling_decisions); // 0 is a placeholder right now
 

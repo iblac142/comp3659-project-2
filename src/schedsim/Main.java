@@ -36,8 +36,8 @@ public class Main {
 	
 	        if (selected_algorithm == 2) {
 
-	            SJF sjf = new SJF(process_table, event_queue, inputs.intInput(in, 
-	            		"Input an \"a\" % value: (0-100)", 0, -1),
+	            SJF sjf = new SJF(process_table, event_queue,
+	            		(float) inputs.intInput(in, "Input an \"a\" % value: (0-100)", 0, -1) / 100,
 	            		inputs.intInput(in, "Input the initial prediction value: (0+)", 0, -1));
 	
 	            sjf.runSimulator();
@@ -46,7 +46,7 @@ public class Main {
 	
 	        if (selected_algorithm == 3) {
 	            SRJF srjf = new SRJF(process_table, event_queue,
-	            		inputs.intInput(in, "Input an \"a\" % value: (0-100)", 0, -1),
+	            		(float) inputs.intInput(in, "Input an \"a\" % value: (0-100)", 0, -1) / 100,
 	            		inputs.intInput(in, "Input the initial prediction value: (0+)", 0, -1));
 	
 	            srjf.runSimulator();
