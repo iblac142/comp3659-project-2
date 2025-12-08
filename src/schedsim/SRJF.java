@@ -10,6 +10,9 @@ public class SRJF extends SJF {
 
     SRJF(Process[] process_table, LinkedList<Event> event_queue, float weighting_coefficient, int starting_guess) {
         super(process_table, event_queue, weighting_coefficient, starting_guess);
+
+        // account for extra IO burst after last CPU burst ends
+        number_of_scheduling_decisions -= 1;
     }
 
     @Override
@@ -60,8 +63,6 @@ public class SRJF extends SJF {
             stopRunningPreemptedProcess();
             updateCpuBurstLength(process_table[running_process]);
         }
-
-        number_of_scheduling_decisions -= 1;
 
         super.runProcess(process);
 
