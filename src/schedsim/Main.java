@@ -16,8 +16,8 @@ public class Main {
                 + "1 - Simple Priority\n"
                 + "2 - Shortest Job First\n"
                 + "3 - Pre-Emptive Shortest Job First\n"
-                + "4 - Round Robin",
-                0, 4);
+                + "4 - Round Robin (not implemented)",
+                0, 3);
 
         if (inputs.getProcesses(in, process_table) >= 0) {
 	        if (selected_algorithm == 0) {
