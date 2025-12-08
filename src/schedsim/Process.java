@@ -17,6 +17,8 @@ public class Process {
     private int total_waiting_time = 0;
     private int waiting_instance_start = 0;
 
+    private boolean been_preempted = false;
+
     Process(int[] times, int priority) {
         this.io_burst_lengths = new int[times.length / 2];
         this.cpu_burst_lengths = new int[times.length / 2];
@@ -129,8 +131,17 @@ public class Process {
         this.priority = perdicted_cpu_burst_length;
     }
 
+    public void setBeen_preempted(boolean been_preempted) {
+        this.been_preempted = been_preempted;
+    }
+
     public void calculateNewPerdictedCpuBurstLength(int weighting_coefficient) {
-        priority = weighting_coefficient * priority + (1 - weighting_coefficient) * priority;
+        if (!been_preempted) {
+            priority = weighting_coefficient * cpu_burst_lengths[burst_number - 1]
+                    + (1 - weighting_coefficient) * priority;
+        } else {
+            priority = weighting_coefficient * cpu_burst_lengths[burst_number] + (1 - weighting_coefficient) * priority;
+        }
     }
 
 }

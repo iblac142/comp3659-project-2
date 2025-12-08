@@ -37,7 +37,21 @@ public class Simulator {
     public void runSimulator() {
         while (!event_queue.isEmpty()) {
             Event event = event_queue.removeFirst();
-            handleEvent(event);
+
+            if (!event_queue.isEmpty()) {
+                Event next_event = event_queue.peekFirst();
+
+                if (event.getTime() == next_event.getTime()) {
+                    handleEvent(event);
+                } else {
+                    handleEvent(event);
+                    invokeScheduler();
+                }
+            } else {
+                handleEvent(event);
+                invokeScheduler();
+            }
+
         }
 
         end_time = time;
@@ -51,7 +65,6 @@ public class Simulator {
         return total_idle_time;
     }
 
-    // for all other event types added follow same structure
     private void handleEvent(Event event) {
         time = event.getTime();
         String type = event.getType();
@@ -67,9 +80,6 @@ public class Simulator {
         else if (type == "io_burst_finishes") {
             handleIoBurstFinishes(event);
         }
-        // may make sense to move this call to handlers depending on how many event
-        // handlers would need to call it (all FIFO ones do)
-        invokeScheduler();
     }
 
     protected void handleProcessArrives(Event event) {
@@ -184,20 +194,21 @@ public class Simulator {
         event_queue.add(event);
         event_queue.sort(Comparator.comparingInt(Event::getTime));
     }
-    
-    public void outputStatistics() {
-    	int total_wait_time = 0;
 
-    	System.out.printf("CPU Utilization: (Idle Time/Total Time)\n%f%% (%d/%d)\n", ((float) total_idle_time / (time + 1)), time, total_idle_time);
-    	
-    	System.out.printf("# of Scheduling Decisions:\n%d\n",0); // 0 is a placeholder right now
-    	
-    	System.out.println("Process #: Wait Time");
-    	for (int i = 0; i < process_count; i += 1) {
-    		System.out.printf("Process %d: %d\n", i, process_table[i].getTotal_waiting_time());
-    		total_wait_time += process_table[i].getTotal_waiting_time();
-    	}
-    	System.out.printf("Avg Wait Time:\n%f\n", ((float) total_wait_time / process_count));
+    public void outputStatistics() {
+        int total_wait_time = 0;
+
+        System.out.printf("CPU Utilization: (Idle Time/Total Time)\n%f%% (%d/%d)\n",
+                ((float) total_idle_time / (time + 1)), time, total_idle_time);
+
+        System.out.printf("# of Scheduling Decisions:\n%d\n", 0); // 0 is a placeholder right now
+
+        System.out.println("Process #: Wait Time");
+        for (int i = 0; i < process_count; i += 1) {
+            System.out.printf("Process %d: %d\n", i, process_table[i].getTotal_waiting_time());
+            total_wait_time += process_table[i].getTotal_waiting_time();
+        }
+        System.out.printf("Avg Wait Time:\n%f\n", ((float) total_wait_time / process_count));
     }
 
 }
