@@ -22,11 +22,11 @@ public class Inputs {
 			try {
 				num = Integer.parseInt(in.nextLine());
 				if (num > max || num < min) {
-					System.out.println("That number is out of bounds. Try again!");
+					System.out.println("Inputted number is out of bounds. Try again:");
 					num = -1;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("That's not a valid number. Try again!");
+				System.out.println("Input is invalid. Try again:");
 				num = -1;
 			}
 		}
@@ -64,17 +64,17 @@ public class Inputs {
 			}
 			if (scanner.hasNextLine()) {
 				System.out.println("File contains greater than 128 processes. This is fine, but excess processes will be omitted.");
+				error = -1;
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found. Aborting!");
-			error = 1;
+			error = -1;
 		} catch (NumberFormatException e) {
 			System.out.println("Process " + process_num + " has an invalid value! Aborting!");
-			error = 1;
+			error = -1;
 		}
-		
-		in.close();
+		error = 0;
 		return error;
 	}
 }
