@@ -187,13 +187,13 @@ public class Simulator {
     /**
      * invokes scheduler to make a scheduling decision
      */
-    private void invokeScheduler() {
-        number_of_scheduling_decisions++;
+    protected void invokeScheduler() {
         int picked_process = decideNextRunningProcess();
 
         if (picked_process == UNCHANGED) {
             return;
         }
+        number_of_scheduling_decisions++;
         runProcess(picked_process);
     }
 

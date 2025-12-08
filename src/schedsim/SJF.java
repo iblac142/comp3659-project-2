@@ -6,10 +6,10 @@ import java.util.LinkedList;
  * Simulates a shortest job first CPU scheduling algorithm
  */
 public class SJF extends SimplePriority {
-    protected int weighting_coefficient;
+    protected float weighting_coefficient;
     protected int starting_guess;
 
-    SJF(Process[] process_table, LinkedList<Event> event_queue, int weighting_coefficient, int starting_guess) {
+    SJF(Process[] process_table, LinkedList<Event> event_queue, float weighting_coefficient, int starting_guess) {
         super(process_table, event_queue);
         this.weighting_coefficient = weighting_coefficient;
         this.starting_guess = starting_guess;

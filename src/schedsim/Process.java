@@ -135,13 +135,18 @@ public class Process {
         this.been_preempted = been_preempted;
     }
 
-    public void calculateNewPerdictedCpuBurstLength(int weighting_coefficient) {
+    public void calculateNewPerdictedCpuBurstLength(float weighting_coefficient) {
+        float float_priority;
+
         if (!been_preempted) {
-            priority = weighting_coefficient * cpu_burst_lengths[burst_number - 1]
-                    + (1 - weighting_coefficient) * priority;
+            float_priority = (int) (weighting_coefficient * cpu_burst_lengths[burst_number - 1]
+                    + (1 - weighting_coefficient) * priority);
         } else {
-            priority = weighting_coefficient * cpu_burst_lengths[burst_number] + (1 - weighting_coefficient) * priority;
+            float_priority = (int) (weighting_coefficient * cpu_burst_lengths[burst_number]
+                    + (1 - weighting_coefficient) * priority);
         }
+
+        priority = Math.round(float_priority);
     }
 
 }

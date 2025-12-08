@@ -95,4 +95,15 @@ public class SRJF extends SJF {
 
     }
 
+    @Override
+    protected void invokeScheduler() {
+        number_of_scheduling_decisions++;
+        int picked_process = decideNextRunningProcess();
+
+        if (picked_process == UNCHANGED) {
+            return;
+        }
+        runProcess(picked_process);
+    }
+
 }
