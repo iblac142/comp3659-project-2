@@ -1,6 +1,9 @@
 # comp3659-project-2
  COMP 3659 Operating Systems Fall 2025
+ 
 This project is a simulation that simulates the effectiveness of various scheduling algorithms.
+
+This project is written in Java.
 
 First, the user is prompted to select an algorithm. 
 * Any input other than 0, 1, 2, or 3 is not accepted, and the user will be reprompted.
@@ -9,6 +12,7 @@ First, the user is prompted to select an algorithm.
 
 Then, the user is prompted to input the location of the csv file that contains the processes to run the algorithm on.
 The each line of the file corresponds to a single process, and must be formatted in the folowing manner:
+
 ```priority,arrival_time,cpu_burst_length1,io_burst_length1,cpu_burst_length2,...```
 
 Where:
