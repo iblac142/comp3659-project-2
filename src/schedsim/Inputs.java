@@ -8,7 +8,7 @@ import java.lang.NumberFormatException;
 public class Inputs {
 	static int MAX_NUM = Integer.MAX_VALUE;
 	
-	public static int intInput(Scanner in, String prompt, int min, int max) {
+	public int intInput(Scanner in, String prompt, int min, int max) {
 		System.out.println(prompt);
 		
 		if (min < 0) {

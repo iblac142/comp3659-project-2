@@ -18,7 +18,7 @@ public class Main {
         
         Inputs inputs = new Inputs();
         Scanner in = new Scanner(System.in);
-        int selected_algorithm = Inputs.intInput(in, "Select an algorithm.\n0 - First Come First Serve\n1 - Simple Priority\n2 - Shortest Job First\n3 - Pre-Emptive Shortest Job First\n4 - Round Robin", 0, 4);
+        int selected_algorithm = inputs.intInput(in, "Select an algorithm.\n0 - First Come First Serve\n1 - Simple Priority\n2 - Shortest Job First\n3 - Pre-Emptive Shortest Job First\n4 - Round Robin", 0, 4);
         
         if (selected_algorithm == 2 || selected_algorithm == 3) {
         	a = Inputs.intInput(in, "Input an \"a\" % value: (0-100)", 0, -1);
