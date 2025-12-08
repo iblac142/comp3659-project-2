@@ -14,7 +14,7 @@ public class Main {
         
         Process[] process_table = new Process[128];
         LinkedList<Integer> process_queue;
-        LinkedList<Event> event_queue;
+        LinkedList<Event> event_queue = null;
         
         Inputs inputs = new Inputs();
         Scanner in = new Scanner(System.in);
@@ -32,15 +32,8 @@ public class Main {
         if (inputs.getProcesses(in, process_table) >= 0) {
         	in.close();
         	// TODO
-        	// run the simulation
+        	Simulator s = new Simulator(process_table, event_queue);
+        	s.outputStatistics();
         };
-        
-        
-        // just a test to see if the input works
-        /* for (int i = 0; i < process_table.length && process_table[i] != null; i += 1) {
-        	System.out.println("Process " + i + ":");
-        	process_table[i].print();
-        } */
-        
     }
 }

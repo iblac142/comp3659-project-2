@@ -13,6 +13,7 @@ public class Simulator {
     protected LinkedList<Event> event_queue;
     protected Process[] process_table;
     protected int running_process = NO_RUNNING_PROCESS;
+    protected int process_count;
     protected int time = 0;
     protected int end_time;
     protected int total_idle_time = 0;
@@ -22,6 +23,12 @@ public class Simulator {
     Simulator(Process[] process_table, LinkedList<Event> event_queue) {
         this.process_table = process_table;
         this.event_queue = event_queue;
+        
+        int i = 0;
+        while (process_table[i] != null) {
+    		i += 1;
+    	}
+        this.process_count = i;
     }
 
     public void runSimulator() {
@@ -171,6 +178,21 @@ public class Simulator {
     private void addEvent(Event event) {
         event_queue.add(event);
         event_queue.sort(Comparator.comparingInt(Event::getTime));
+    }
+    
+    public void outputStatistics() {
+    	int total_wait_time = 0;
+
+    	System.out.printf("CPU Utilization: (Idle Time/Total Time)\n%f%% (%d/%d)\n", ((float) total_idle_time / (time + 1)), time, total_idle_time);
+    	
+    	System.out.printf("# of Scheduling Decisions:\n%d\n",0); // 0 is a placeholder right now
+    	
+    	System.out.println("Process #: Wait Time");
+    	for (int i = 0; i < process_count; i += 1) {
+    		System.out.printf("Process %d: %d\n", i, process_table[i].getTotal_waiting_time());
+    		total_wait_time += process_table[i].getTotal_waiting_time();
+    	}
+    	System.out.printf("Avg Wait Time:\n%f\n", ((float) total_wait_time / process_count));
     }
 
 }
