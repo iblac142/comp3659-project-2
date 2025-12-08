@@ -20,6 +20,7 @@ public class Simulator {
     protected int process_count;
     protected int time = 0;
     protected int end_time;
+    protected int number_of_scheduling_decisions = 0;
     protected int total_idle_time = 0;
     protected int idle_instance_start = 0;
     protected boolean is_idle = true;
@@ -187,6 +188,7 @@ public class Simulator {
      * invokes scheduler to make a scheduling decision
      */
     private void invokeScheduler() {
+        number_of_scheduling_decisions++;
         int picked_process = decideNextRunningProcess();
 
         if (picked_process == UNCHANGED) {
