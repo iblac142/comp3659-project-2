@@ -91,7 +91,7 @@ public class Inputs {
 					error = -1;
 				}
 			}
-			if (scanner.hasNextLine()) {
+			if (error == 0 && scanner.hasNextLine()) {
 				System.out.println("File contains greater than 128 processes. This is fine, but excess processes will be omitted.");
 				error = 1;
 			}
