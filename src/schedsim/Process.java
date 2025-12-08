@@ -11,7 +11,8 @@ public class Process {
     // do we even need these two?
     private int time_spent = 0;
     private int total_time = 0;
-
+    
+    private int arrival_time;
     private int priority; // in SJF and SRJF this is also the estimated cpu burst length
     private int end_time;
     private int total_waiting_time = 0;
@@ -22,6 +23,7 @@ public class Process {
     Process(int[] times, int priority) {
         this.io_burst_lengths = new int[times.length / 2];
         this.cpu_burst_lengths = new int[times.length / 2];
+        this.arrival_time = times[0];
 
         for (int i = 2; i < times.length; i += 2) {
             io_burst_lengths[i / 2] = times[i];
@@ -35,6 +37,9 @@ public class Process {
     }
 
     // some of these get and sets might not be used remove before submitting
+    public int getArrival_time() {
+    	return arrival_time;
+    }
     public int getIoBurstLength() {
         return io_burst_lengths[burst_number];
     }
